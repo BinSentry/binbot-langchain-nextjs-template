@@ -1,8 +1,5 @@
-"use client";
-
 import { NextRequest, NextResponse } from "next/server";
 import { Message as VercelChatMessage, StreamingTextResponse } from "ai";
-import { loadMcpTools } from '@langchain/mcp-adapters';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import {
@@ -12,6 +9,7 @@ import {
   HumanMessage,
   SystemMessage,
 } from "@langchain/core/messages";
+import { initSseClientAndTools, initStdioClientAndTools } from "@/lib/mcp-client";
 
 export const runtime = "edge";
 
@@ -41,6 +39,8 @@ const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
 
 let currentDate = new Date();
 let currentDateString = currentDate.toISOString().split("T")[0];
+// let stdioClientAndTools = initStdioClientAndTools();
+let sseTools = initSseClientAndTools();
 
 const AGENT_SYSTEM_TEMPLATE = "You are a helpful chatbot about any topic that may or may not need to use tools to answer the user's "
                    "question. If you do not need to use tools to answer a question, go ahead and answer it without using "
@@ -97,12 +97,6 @@ export async function POST(req: NextRequest) {
         verbose: false
     });
 
-    // const sseClient = await initSseClient();
-    // const tools = await loadMcpTools('binbot-server', sseClient);
-    // STDIO:
-    // const stdioClient = await initStdioClient();
-    // const tools = await loadMcpTools('binbot-client-stdio', stdioClient);
-
     let currentDate = new Date();
     let currentDateString = currentDate.toISOString().split("T")[0];
 
@@ -124,7 +118,7 @@ export async function POST(req: NextRequest) {
 
     const agent = createReactAgent({
         llm: chat,
-        tools,
+        tools: sseTools,
         prompt: "You are a helpful chatbot about any topic that may or may not need to use tools to answer the user's " +
                    "question. If you do not need to use tools to answer a question, go ahead and answer it without using " + 
                    "tools.  If a tool would be helpful to answer a question, try to use it. If necessary feel free to use " + 
