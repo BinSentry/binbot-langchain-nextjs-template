@@ -11,7 +11,7 @@ import {
 } from "@langchain/core/messages";
 import { initSseClientAndTools, initStdioClientAndTools } from "@/lib/mcp-client";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const convertVercelMessageToLangChainMessage = (message: VercelChatMessage) => {
   if (message.role === "user") {
@@ -39,8 +39,8 @@ const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
 
 let currentDate = new Date();
 let currentDateString = currentDate.toISOString().split("T")[0];
-// let stdioClientAndTools = initStdioClientAndTools();
-let sseTools = await initSseClientAndTools();
+// let stdioTools = initStdioClientAndTools();
+// let sseTools = initSseClientAndTools();
 
 const AGENT_SYSTEM_TEMPLATE = "You are a helpful chatbot about any topic that may or may not need to use tools to answer the user's "
                    "question. If you do not need to use tools to answer a question, go ahead and answer it without using "
@@ -115,6 +115,8 @@ export async function POST(req: NextRequest) {
     //   messageModifier: new SystemMessage(AGENT_SYSTEM_TEMPLATE),
     // });
 
+    // let stdioTools = await initStdioClientAndTools();
+    let sseTools = await initSseClientAndTools();
 
     const agent = createReactAgent({
         llm: chat,
