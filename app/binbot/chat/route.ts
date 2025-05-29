@@ -40,7 +40,7 @@ const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
 let currentDate = new Date();
 let currentDateString = currentDate.toISOString().split("T")[0];
 // let stdioClientAndTools = initStdioClientAndTools();
-let sseTools = initSseClientAndTools();
+let sseTools = await initSseClientAndTools();
 
 const AGENT_SYSTEM_TEMPLATE = "You are a helpful chatbot about any topic that may or may not need to use tools to answer the user's "
                    "question. If you do not need to use tools to answer a question, go ahead and answer it without using "

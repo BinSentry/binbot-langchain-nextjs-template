@@ -10,8 +10,10 @@
     "lint": "next lint",
     "format": "prettier --write \"app\""
   },
-  "browser":{
-    "child_process": false
+  "browser": {
+    "child_process": false,
+    "fs": false,
+    "path:": false
   },
   "engines": {
     "node": ">=18"
@@ -35,6 +37,7 @@
     "ai": "^3.1.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
     "langchain": "^0.3.19",
     "lucide-react": "^0.473.0",
     "next": "^15.2.4",

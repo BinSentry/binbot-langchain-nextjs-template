@@ -1,13 +1,9 @@
-// from: https://github.com/shricodev/chat-nextjs-mcp-client/blob/main/lib/mcp-client/index.ts
-import { OpenAI } from "openai";
+'use server';
+
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import {SSEClientTransport} from '@modelcontextprotocol/sdk/client/sse.js';
 import { loadMcpTools } from '@langchain/mcp-adapters';
-
-import dotenv from "dotenv";
-dotenv.config();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 // SSE should be compatible with streamable-http
 export const initSseClientAndTools = async () => {
